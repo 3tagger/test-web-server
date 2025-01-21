@@ -43,12 +43,20 @@ func getAddr(flgs *flags) string {
 	return fmt.Sprintf(":%s", flgs.Port)
 }
 
+// note: used to simulate load
+func fib(n int) int {
+	if n <= 2 {
+		return 1
+	}
+	return fib(n-2) + fib(n-1)
+}
+
 func createServer(flgs *flags) *http.Server {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(httpResponse{
-			Message: fmt.Sprintf("hello world - %s", flgs.ID),
+			Message: fmt.Sprintf("hello world - %s - num: %d", flgs.ID, fib(40)),
 		})
 	})
 
